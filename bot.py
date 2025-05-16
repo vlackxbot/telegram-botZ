@@ -71,7 +71,7 @@ async def verify(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_photo(
             chat_id=chat_id,
             photo=photo,
-            caption="🎯 Spin the wheel to win up to ₹100 Paytm cash!",
+            caption="🎯 Spin the wheel to win up to Rs.100 Paytm cash!",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("🎰 Spin Now", callback_data="spin")]
             ])
@@ -88,7 +88,7 @@ async def spin(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_data[user.id] = {'balance': won_amount, 'referrals': 0, 'upi': None}
 
     await context.bot.send_message(chat_id=chat_id,
-        text=f"🎉 Congratulations! You won ₹{won_amount}.
+        text=f"🎉 Congratulations! You won Rs.{won_amount}.
 
 Minimum withdrawal is ₹100. Refer friends to earn more.",
         reply_markup=InlineKeyboardMarkup([
@@ -107,7 +107,7 @@ async def withdraw(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         await context.bot.send_message(chat_id=chat_id,
             text=f"Your current balance is ₹{user_info['balance']}.
-Refer more friends to reach ₹100.",
+Refer more friends to reach Rs.100.",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("📢 Refer Friends", callback_data="refer")]
             ]))
@@ -133,10 +133,10 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
             user_info['upi'] = text
             await context.bot.send_message(
                 chat_id=chat_id,
-                text="✅ Your UPI ID has been received. You'll receive ₹100 within 24 hours."
+                text="✅ Your UPI ID has been received. You'll receive Rs.100 within 24 hours."
             )
         else:
-            await context.bot.send_message(chat_id=chat_id, text="You need ₹100 balance to withdraw.")
+            await context.bot.send_message(chat_id=chat_id, text="You need Rs.100 balance to withdraw.")
 
 telegram_app.add_handler(CommandHandler("start", start))
 telegram_app.add_handler(CallbackQueryHandler(verify, pattern="^verify$"))
