@@ -104,7 +104,7 @@ async def withdraw(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await context.bot.send_message(chat_id=chat_id, text="Please enter your UPI ID for withdrawal.")
     else:
         await context.bot.send_message(chat_id=chat_id,
-            text=f"Your current balance is ₹{user_info['balance']}.
+            text=f"Your current balance is Rs.{user_info['balance']}.
 Refer more friends to reach Rs.100.",
             reply_markup=InlineKeyboardMarkup([
                 [InlineKeyboardButton("📢 Refer Friends", callback_data="refer")]
