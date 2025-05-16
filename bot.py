@@ -134,31 +134,27 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         else:
             await context.bot.send_message(chat_id=chat_id, text="You need Rs.100 balance to withdraw.")
 
-telegram_app.add_handler(CommandHandler("start", start))
-telegram_app.add_handler(CallbackQueryHandler(verify, pattern="^verify$"))
-telegram_app.add_handler(CallbackQueryHandler(spin, pattern="^spin$"))
-telegram_app.add_handler(CallbackQueryHandler(withdraw, pattern="^withdraw$"))
-telegram_app.add_handler(CallbackQueryHandler(refer, pattern="^refer$"))
-telegram_app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
+async def main():
+    application = Application.builder().token(BOT_TOKEN).build()
 
-@app.route(f"/{BOT_TOKEN}", methods=["POST"])
-async def webhook():
-    update = Update.de_json(request.get_json(force=True), telegram_app.bot)
-    await telegram_app.process_update(update)
-    return "ok"
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(CallbackQueryHandler(verify, pattern="^verify$"))
+    application.add_handler(CallbackQueryHandler(spin, pattern="^spin$"))
+    application.add_handler(CallbackQueryHandler(withdraw, pattern="^withdraw$"))
+    application.add_handler(CallbackQueryHandler(refer, pattern="^refer$"))
+    application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
-@app.route("/", methods=["GET"])
-def home():
-    return "Bot is live!"
+    # ✅ Set webhook
+    await application.bot.set_webhook(url=f"{APP_URL}/{BOT_TOKEN}")
 
-async def set_webhook():
-    await telegram_app.bot.set_webhook(f"{APP_URL}/{BOT_TOKEN}")
-
-if __name__ == "__main__":
-    import asyncio
-    asyncio.run(set_webhook())
-    telegram_app.run_webhook(
+    # ✅ Run application webhook
+    await application.run_webhook(
         listen="0.0.0.0",
         port=int(os.environ.get("PORT", 5000)),
         webhook_url=f"{APP_URL}/{BOT_TOKEN}"
     )
+
+# --- Run app properly using asyncio ---
+
+if __name__ == "__main__":
+    asyncio.run(main())
