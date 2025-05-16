@@ -146,14 +146,15 @@ async def main():
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 
     # ✅ Set webhook
+    await application.initialize()
     await application.bot.set_webhook(url=f"{APP_URL}/{BOT_TOKEN}")
-
-    # ✅ Run application webhook
-    await application.run_webhook(
+    await application.start()
+    await application.updater.start_webhook(
         listen="0.0.0.0",
         port=int(os.environ.get("PORT", 5000)),
         webhook_url=f"{APP_URL}/{BOT_TOKEN}"
     )
+    await application.updater.idle()
 
 # --- Run app properly using asyncio ---
 
