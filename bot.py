@@ -116,8 +116,7 @@ async def refer(update: Update, context: ContextTypes.DEFAULT_TYPE):
     referral_link = f"https://t.me/GETUPIINSTANTBOT?start={user.id}"
 
     await context.bot.send_message(chat_id=chat_id,
-        text=f"Share this link with your friends: {referral_link}
-You'll earn ₹10 for each referral.")
+        text=f"Share this link with your friends: {referral_link}./n/nYou'll earn ₹10 for each referral.")
 
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
